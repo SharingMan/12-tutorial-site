@@ -1,0 +1,70 @@
+name: Sync Notion to Docusaurus
+
+on:
+  # 定时同步（每6小时一次）
+  schedule:
+    - cron: '0 */6 * * *'
+  # 手动触发
+  workflow_dispatch:
+  # 推送到 main 分支时触发（可选）
+  # push:
+  #   branches:
+  #     - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Sync from Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_ROOT_PAGE_ID: ${{ secrets.NOTION_ROOT_PAGE_ID }}
+        run: |
+          npx --yes @sillsdev/docu-notion \
+            -n "$NOTION_TOKEN" \
+            -r "$NOTION_ROOT_PAGE_ID" \
+            -m ./docs
+      
+      - name: Check for changes
+        id: verify-changed-files
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit changes
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs/
+          git add static/
+          git commit -m "🔄 Sync from Notion [skip ci]" || exit 0
+          git push
+      
+      - name: Build Docusaurus
+        run: npm run build
+      
+      - name: Deploy to GitHub Pages (可选)
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build

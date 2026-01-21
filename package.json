@@ -1,0 +1,54 @@
+{
+  "name": "tutorial-site",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "prestart": "node scripts/reading-time.js",
+    "build": "docusaurus build",
+    "prebuild": "node scripts/reading-time.js",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "typecheck": "tsc",
+    "sync:notion": "bash scripts/sync-notion.sh",
+    "sync:notion:npx": "npx @sillsdev/docu-notion -n $NOTION_TOKEN -r $NOTION_ROOT_PAGE_ID -m ./docs",
+    "sync:notion:full": "npm run sync:notion:npx && node scripts/fix-notion-mdx.js",
+    "fix:notion-mdx": "node scripts/fix-notion-mdx.js",
+    "watch:notion": "bash scripts/watch-notion.sh"
+  },
+  "dependencies": {
+    "@docusaurus/core": "3.9.2",
+    "@docusaurus/preset-classic": "3.9.2",
+    "@mdx-js/react": "^3.0.0",
+    "clsx": "^2.0.0",
+    "prism-react-renderer": "^2.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "3.9.2",
+    "@docusaurus/tsconfig": "3.9.2",
+    "@docusaurus/types": "3.9.2",
+    "typescript": "~5.6.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=20.0"
+  }
+}

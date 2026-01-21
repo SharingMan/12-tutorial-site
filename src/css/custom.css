@@ -1,0 +1,119 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #2e8555;
+  --ifm-color-primary-dark: #29784c;
+  --ifm-color-primary-darker: #277148;
+  --ifm-color-primary-darkest: #205d3b;
+  --ifm-color-primary-light: #33925d;
+  --ifm-color-primary-lighter: #359962;
+  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary-dark: #21af90;
+  --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870;
+  --ifm-color-primary-light: #29d5b0;
+  --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* 教程左侧目录：阅读状态与建议学习时间 */
+
+/* 预先为所有侧边栏文档链接设置样式，避免跳转时抖动 */
+aside .menu__link[href^="/docs/"],
+[class*="sidebar"] .menu__link[href^="/docs/"],
+[class*="Sidebar"] .menu__link[href^="/docs/"] {
+  position: relative;
+  padding-left: 26px;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  transition: padding-left 0.15s ease;
+}
+
+/* 未阅读：左侧绿色空心圆 */
+aside .menu__link[href^="/docs/"]::before,
+[class*="sidebar"] .menu__link[href^="/docs/"]::before,
+[class*="Sidebar"] .menu__link[href^="/docs/"]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #2ecc71;
+  background: transparent;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+/* 排除带有锚点的链接（TOC 链接） */
+aside .menu__link[href*="#"]::before,
+[class*="sidebar"] .menu__link[href*="#"]::before,
+[class*="Sidebar"] .menu__link[href*="#"]::before {
+  display: none;
+}
+
+aside .menu__link[href*="#"],
+[class*="sidebar"] .menu__link[href*="#"],
+[class*="Sidebar"] .menu__link[href*="#"] {
+  padding-left: 0.5rem;
+}
+
+/* 已阅读：左侧绿色实心圆 + 白色对勾 */
+.menu__link--visited::before {
+  content: '✓' !important;
+  border: none !important;
+  background: #2ecc71 !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  line-height: 16px !important;
+  text-align: center !important;
+}
+
+/* 建议学习时间（由 Root 注入的 .menu__link-time） */
+.menu__link-time {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.8rem;
+  margin-left: 0.2rem;
+  white-space: nowrap;
+  opacity: 0;
+  animation: fadeIn 0.2s ease forwards;
+  animation-delay: 0.1s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 页面切换时的平滑过渡 */
+.main-wrapper {
+  transition: opacity 0.15s ease;
+}
+
+/* 侧边栏整体平滑过渡 */
+aside.theme-doc-sidebar-container {
+  transition: opacity 0.1s ease;
+}
