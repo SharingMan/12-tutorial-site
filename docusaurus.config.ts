@@ -25,7 +25,8 @@ const config: Config = {
   organizationName: 'your-org', // Usually your GitHub org/user name.
   projectName: 'tutorial-site', // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
 
   // 配置中文
   i18n: {
@@ -95,7 +96,7 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://github.com/your-org/tutorial-site',
+          href: 'https://github.com/SharingMan/12-tutorial-site',
           label: 'GitHub',
           position: 'right',
         },
@@ -108,12 +109,12 @@ const config: Config = {
           title: '教程',
           items: [
             {
-              label: 'AI学习',
-              to: '/docs/ai-learning/intro',
+              label: '2024新海周记',
+              to: '/docs/2024新海周记/新海周记',
             },
             {
-              label: '工具使用',
-              to: '/docs/tools/intro',
+              label: '2026新海周记',
+              to: '/docs/2026新海周记/新海周记',
             },
           ],
         },
@@ -122,7 +123,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/your-org/tutorial-site',
+              href: 'https://github.com/SharingMan/12-tutorial-site',
             },
           ],
         },
