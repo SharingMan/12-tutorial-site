@@ -92,12 +92,13 @@ jobs:
           git commit -m "🔄 Sync from Notion [skip ci]" || exit 0
           git push || echo "Push failed, but continuing..."
       
-      - name: Build Docusaurus
-        run: npm run build
-      
-      - name: Deploy to GitHub Pages (可选)
-        if: github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+      # 如果使用 Vercel 部署，可以注释掉 GitHub Pages 部署步骤
+      # - name: Build Docusaurus
+      #   run: npm run build
+      # 
+      # - name: Deploy to GitHub Pages (可选)
+      #   if: github.ref == 'refs/heads/main'
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./build
