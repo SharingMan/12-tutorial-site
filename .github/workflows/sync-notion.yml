@@ -14,6 +14,7 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 20  # 设置 20 分钟超时
     
     steps:
       - name: Checkout repository
@@ -48,14 +49,22 @@ jobs:
           echo "✅ Secrets are configured"
       
       - name: Sync from Notion
+        timeout-minutes: 15  # Notion 同步步骤最多 15 分钟
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_ROOT_PAGE_ID: ${{ secrets.NOTION_ROOT_PAGE_ID }}
         run: |
+          echo "🚀 开始同步 Notion 内容..."
+          echo "⏰ 预计需要 5-10 分钟，请耐心等待..."
           npx --yes @sillsdev/docu-notion \
             -n "$NOTION_TOKEN" \
             -r "$NOTION_ROOT_PAGE_ID" \
-            -m ./docs
+            -m ./docs || {
+              echo "❌ Notion 同步失败或超时"
+              echo "💡 提示：可能是网络问题或 Notion API 限制"
+              exit 1
+            }
+          echo "✅ Notion 同步完成"
       
       - name: Fix MDX issues
         run: node scripts/fix-notion-mdx.js || true
